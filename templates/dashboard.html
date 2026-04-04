@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow mb-4">
+            <div class="card-body p-4">
+                <h3 class="card-title mb-3">👋 Bienvenue, {{ current_user.username }} !</h3>
+                <hr>
+                <h5 class="mb-3">📝 Ma liste de tâches</h5>
+
+                <!-- Formulaire pour ajouter une tâche -->
+                <form method="POST" class="d-flex mb-4">
+                    <input type="text" name="content" class="form-control me-2" placeholder="Ajouter une tâche..." required>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </form>
+
+                <!-- Liste des tâches -->
+                {% if tasks %}
+                <ul class="list-group">
+                    {% for task in tasks %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span style="{% if task.done %}text-decoration: line-through; color: gray;{% endif %}">
+                            {{ task.content }}
+                        </span>
+                        <div>
+                            <a href="/done/{{ task.id }}" class="btn btn-sm btn-success me-1">
+                                {% if task.done %}↩️{% else %}✅{% endif %}
+                            </a>
+                            <a href="/delete/{{ task.id }}" class="btn btn-sm btn-danger">🗑️</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted text-center">Aucune tâche pour le moment. Ajoutes-en une !</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
