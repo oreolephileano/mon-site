@@ -55,12 +55,15 @@ def delete(task_id):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     if request.method == 'POST':
         username = request.form['username']
         password = generate_password_hash(request.form['password'])
         user = User(username=username, password=password)
         db.session.add(user)
         db.session.commit()
+        flash('Compte créé avec succès ! Connecte-toi.', 'success')
         return redirect(url_for('login'))
     return render_template('register.html')
 
